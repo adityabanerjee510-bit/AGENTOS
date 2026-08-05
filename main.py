@@ -5,86 +5,54 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+from src.commands.banner import banner_
+
 from src.user_interface.search_ui import search_ui
 
 from src.user_interface.download_ui import download_ui
 
-# from src.user_interface.local_model_ui import run_ui
+from   src.commands.table import display_table
+
+
+class Questions:
+    def select_command(self):
+        answers = questionary.text(
+                    "Select Your Command :"
+                ).ask()  # Default storage path
+        return answers
+
+    # def run(self):
+    #     print("Run Question")
+
+    # def search(self):
+    #     print("Search Question")
 
 app = typer.Typer(help="AI Model Manager CLI")
 console = Console()
-
-# COMMANDS = [
-#     "download",
-#     "search",
-#     "list",
-#     "info",
-#     "remove",
-#     "verify",
-#     "run",
-#     "update",
-#     "config",
-#     "doctor",
-#     "cache",
-#     "help",
-#     "exit",
-# ]
-
 
 def home():
     while True:
         console.clear()
 
-        banner = r"""
-   █████╗ ██╗███╗   ███╗ ██████╗ ██████╗ ███████╗██╗
-  ██╔══██╗██║████╗ ████║██╔═══██╗██╔══██╗██╔════╝██║
-  ███████║██║██╔████╔██║██║   ██║██║  ██║█████╗  ██║
-  ██╔══██║██║██║╚██╔╝██║██║   ██║██║  ██║██╔══╝  ██║
-  ██║  ██║██║██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗███████╗
-  ╚═╝  ╚═╝╚═╝╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝
-"""
+        banner_()
 
-        console.print(
-            Panel.fit(
-                Text(banner, style="bold cyan")
-                + Text("\n\nAI Model Manager CLI v1.0", style="bold yellow"),
-                border_style="bright_blue",
-            )
-        )
+        questions = Questions()
+        command = questions.select_command()
 
-        table = Table(
-            title="Available Commands",
-            show_header=True,
-            header_style="bold magenta",
-        )
+        if command is None:
+            continue
 
-        table.add_column("Command", style="cyan")
-        table.add_column("Description")
+        command = command.strip().lower()
 
-        table.add_row("download", "Download a model")
-        table.add_row("search", "Search Hugging Face")
-        table.add_row("list", "Installed models")
-        table.add_row("info", "Model information")
-        table.add_row("remove", "Delete model")
-        table.add_row("verify", "Verify model files")
-        table.add_row("run", "Load model")
-        table.add_row("update", "Update model")
-        table.add_row("config", "Settings")
-        table.add_row("doctor", "Check environment")
-        table.add_row("cache", "Manage cache")
-        table.add_row("help", "Show help")
-        table.add_row("exit", "Exit Application")
+        
+        if command == "":
+            console.print("[red]Please enter a command.[/red]")
+            questionary.press_any_key_to_continue().ask()
+            continue
 
-        console.print(table)
-
-        answers = questionary.text(
-            "Select Your Command :"
-        ).ask()  # Default storage path
-        command = answers
-
-        console.print(f"\n[bold green]command :[/bold green] {command}\n")
-
-        # ---------------- Command Routing ---------------- #
+        if command == "--help":
+            display_table()
+            command = questions.select_command()
 
         if command == "download":
             download_ui()
@@ -104,8 +72,8 @@ def home():
         elif command == "verify":
             console.print("[yellow]Verify UI Coming Soon[/yellow]")
 
-        elif command == "run":
-            run_ui()
+        # elif command == "run":
+        #     run_ui()
 
         elif command == "update":
             console.print("[yellow]Update UI Coming Soon[/yellow]")
