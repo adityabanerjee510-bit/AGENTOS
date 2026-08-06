@@ -4,7 +4,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
-
+# aditya commit
 from src.commands.banner import banner_
 
 from src.user_interface.search_ui import search_ui
@@ -72,9 +72,6 @@ def home():
         elif command == "verify":
             console.print("[yellow]Verify UI Coming Soon[/yellow]")
 
-        # elif command == "run":
-        #     run_ui()
-
         elif command == "update":
             console.print("[yellow]Update UI Coming Soon[/yellow]")
 
@@ -86,9 +83,6 @@ def home():
 
         elif command == "cache":
             console.print("[yellow]Cache UI Coming Soon[/yellow]")
-
-        elif command == "help":
-            console.print("[yellow]Help UI Coming Soon[/yellow]")
 
         elif command == "exit":
             console.print("\n[bold red]Goodbye! 👋[/bold red]")
